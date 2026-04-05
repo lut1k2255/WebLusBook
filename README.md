@@ -147,3 +147,132 @@ Frontend:
 4	| Таблица пользователей |	Колонки: ID, Имя, Email, Телефон, Статус, Действия (редактировать, удалить)
 5	| Статусы	| Бейджи: Активен (зелёный), Заблокирован (красный), Ожидание (оранжевый)
 6	| Управление книгами	| Таблица с названием, автором, жанром, ценой, статусом (опубликована/черновик), действиями
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Модели данных
+
+User (Пользователи)
+
+| №	| Блок	| Описание |
+|---|-------|----------|
+id	| integer	| Уникальный идентификатор
+email	| string	| Email адрес
+password	| string |	Хеш пароля
+firstName |	string |	Имя пользователя
+lastName	| string	| Фамилия пользователя
+phone	| string	| Номер телефона
+avatar	| string |	URL аватара
+role	| string	| Роль: user, admin
+createdAt	| string |	Дата регистрации
+
+Book (Книги)
+
+| №	| Блок	| Описание |
+|---|-------|----------|
+id	| integer |	Уникальный идентификатор
+title	| string |	Название книги
+author	| string |	Автор
+description	| string | 	Полное описание
+genre	| string	|Жанр (или связь с таблицей genres)
+price	| float |	Цена
+rating	| float |	Средний рейтинг (0-5)
+coverImage	| string |	URL обложки
+year	| integer	| Год издания
+publisher |	string	| Издательство
+pages	| integer	| Количество страниц
+language | 	string	| Язык книги
+isbn	| string	| ISBN номер
+ageRestriction |	integer	| Возрастные ограничения (0+, 6+, 12+, 16+, 18+)
+createdAt | 	string	| Дата добавления
+
+Order (Заказы/Покупки)
+
+| №	| Блок	| Описание |
+|---|-------|----------|
+id	| integer	| Уникальный идентификатор
+userId	| integer	| ID пользователя
+bookId	| integer	| ID книги
+quantity | 	integer	| Количество
+totalPrice	| float	| Итоговая стоимость
+status	| string	| Статус: pending, paid, completed, cancelled
+createdAt	| string	| Дата создания заказа
+
+Review (Отзывы)
+
+| №	| Блок	| Описание |
+|---|-------|----------|
+id	| integer	| Уникальный идентификатор
+userId	| integer	| ID пользователя
+bookId	| integer	| ID книги
+rating	| integer	| Оценка (1-5)
+comment	| string	| Текст отзыва
+createdAt	| string	| Дата создания отзыва
+
+Favorite (Избранное)
+
+| №	| Блок	| Описание |
+|---|-------|----------|
+id |	integer |	Уникальный идентификатор
+userId |	integer |	ID пользователя
+bookId | 	integer | 	ID книги
+createdAt |	string |	Дата добавления
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# API Endpoints
+
+Авторизация
+
+| №	| Endpoint	| Описание |
+|---|-------|----------|
+POST	| /api/auth/register |	Регистрация нового пользователя
+POST	| /api/auth/login	| Вход в систему
+GET	| /api/auth/me	| Получение данных текущего пользователя
+POST	| /api/auth/logout	| Выход из системы
+
+Книги
+
+| №	| Endpoint	| Описание |
+|---|-------|----------|
+GET	| /api/books	| Получить все книги
+GET	| /api/books/bestsellers	| Получить бестселлеры
+GET	| /api/books/new	| Получить новинки
+GET	| /api/books/:id	| Получить книгу по ID
+GET	| /api/books/search	| Поиск книг
+POST	| /api/books	| Создать книгу (admin)
+PUT	| /api/books/:id	| Обновить книгу (admin)
+DELETE	| /api/books/:id	| Удалить книгу (admin)
+
+Заказы
+
+| №	| Endpoint	| Описание |
+|---|-------|----------|
+GET	| /api/orders/my	| Мои заказы (покупки)
+GET	| /api/orders	| Все заказы (admin)
+GET	| /api/orders/:id |	Получить заказ по ID
+POST	| /api/orders	| Создать заказ (купить книгу)
+
+Отзывы
+
+| №	| Endpoint	| Описание |
+|---|-------|----------|
+GET	| /api/reviews/book/:bookId	| Получить отзывы к книге
+POST	| /api/reviews	| Добавить отзыв 
+PUT	| /api/reviews/:id	| Обновить отзыв
+DELETE	| /api/reviews/:id |	Удалить отзыв
+
+Избранное
+
+| №	| Endpoint	| Описание |
+|---|-------|----------|
+GET	| /api/favorites	| Получить избранные книги
+POST	| /api/favorites/toggle	| Добавить/удалить из избранного
+DELETE	| /api/favorites/:bookId	| Удалить из избранного
+
+Жанры
+
+| №	| Endpoint	| Описание |
+|---|-------|----------|
+GET	| /api/genres	| Получить все жанры
+POST	| /api/genres	| Создать жанр (admin)
+PUT	| /api/genres/:id	| Обновить жанр (admin)
+DELETE	| /api/genres/:id	| Удалить жанр (admin)
